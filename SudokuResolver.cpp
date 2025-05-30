@@ -183,7 +183,7 @@ int main()
     std::setlocale(LC_ALL, "pt_BR.UTF-8");
 
     // Carregar o tabuleiro do arquivo
-    std::vector<std::vector<char>> tabuleiro = carregar_tabuleiro("sudoku_puzzle.txt");
+    std::vector<std::vector<char>> tabuleiro = carregar_tabuleiro("sudoku_gerado.txt");
 
     std::cout << "Quebra-cabeça de Sudoku carregado:\n";
     imprimir_tabuleiro(tabuleiro);

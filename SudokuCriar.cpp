@@ -213,7 +213,7 @@ int main()
     imprimir_tabuleiro(tabuleiro);
 
     // Salvar o tabuleiro em um arquivo
-    salvar_tabuleiro(tabuleiro, "sudoku_puzzle.txt");
+    salvar_tabuleiro(tabuleiro, "sudoku_gerado.txt");
 
     return 0;
 }
