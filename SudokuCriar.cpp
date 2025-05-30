@@ -209,7 +209,7 @@ int main()
     // Gerar um tabuleiro de Sudoku com a dificuldade especificada
     std::vector<std::vector<char>> tabuleiro = gerar_tabuleiro_aleatorio(num_vazios);
 
-    std::cout << "Quebra-cabeça de Sudoku gerado:\n";
+    std::cout << "Sudoku gerado:\n";
     imprimir_tabuleiro(tabuleiro);
 
     // Salvar o tabuleiro em um arquivo
