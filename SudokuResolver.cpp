@@ -5,21 +5,84 @@
 #include <fstream>
 #include <chrono>
 #include <locale>
-#include <iostream>
+#include <string>
+#include <set>
 
-// Função para obter a região 3x3 correspondente a uma determinada linha e coluna
+// ... (funções obter_regiao e validar_tabuleiro iguais ao exemplo anterior) ...
+
 constexpr std::size_t obter_regiao(std::size_t linha, std::size_t coluna) noexcept
 {
     return (linha / 3) * 3 + coluna / 3;
 }
 
+std::string validar_tabuleiro(const std::vector<std::vector<char>> &tabuleiro)
+{
+    // ... mesmo código de validação anterior ...
+    // Verificar linhas
+    for (int i = 0; i < 9; ++i)
+    {
+        std::set<char> s;
+        for (int j = 0; j < 9; ++j)
+        {
+            char c = tabuleiro[i][j];
+            if (c != '.')
+            {
+                if (s.count(c))
+                    return "Número repetido na linha " + std::to_string(i + 1) + ".";
+                s.insert(c);
+            }
+        }
+    }
+    // Verificar colunas
+    for (int j = 0; j < 9; ++j)
+    {
+        std::set<char> s;
+        for (int i = 0; i < 9; ++i)
+        {
+            char c = tabuleiro[i][j];
+            if (c != '.')
+            {
+                if (s.count(c))
+                    return "Número repetido na coluna " + std::to_string(j + 1) + ".";
+                s.insert(c);
+            }
+        }
+    }
+    // Verificar blocos 3x3
+    for (int bi = 0; bi < 3; ++bi)
+    {
+        for (int bj = 0; bj < 3; ++bj)
+        {
+            std::set<char> s;
+            for (int i = 0; i < 3; ++i)
+            {
+                for (int j = 0; j < 3; ++j)
+                {
+                    char c = tabuleiro[3 * bi + i][3 * bj + j];
+                    if (c != '.')
+                    {
+                        if (s.count(c))
+                            return "Número repetido no bloco 3x3 começando em linha " + std::to_string(3 * bi + 1) + ", coluna " + std::to_string(3 * bj + 1) + ".";
+                        s.insert(c);
+                    }
+                }
+            }
+        }
+    }
+    for (int i = 0; i < 9; ++i)
+        for (int j = 0; j < 9; ++j)
+            if (tabuleiro[i][j] != '.' && (tabuleiro[i][j] < '1' || tabuleiro[i][j] > '9'))
+                return "Caractere inválido na posição linha " + std::to_string(i + 1) +
+                       ", coluna " + std::to_string(j + 1) + ".";
+    return "";
+}
+
 class Solucao
 {
 public:
-    // Função principal para resolver o Sudoku
-    void resolverSudoku(std::vector<std::vector<char>> &tabuleiro) const noexcept
+    // Agora retorna bool: true se conseguiu resolver, false se não tem solução
+    bool resolverSudoku(std::vector<std::vector<char>> &tabuleiro) const noexcept
     {
-        // Arrays para acompanhar os dígitos presentes em cada linha, coluna e região 3x3
         std::array<std::bitset<9>, 9> linha_contem = {0, 0, 0, 0, 0, 0, 0, 0, 0};
         std::array<std::bitset<9>, 9> coluna_contem = {0, 0, 0, 0, 0, 0, 0, 0, 0};
         std::array<std::bitset<9>, 9> regiao_contem = {0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -40,15 +103,11 @@ public:
                 }
             }
         }
-        // Chamar a função recursiva para resolver o tabuleiro
-        if (!resolver(tabuleiro, 0, 0, linha_contem, coluna_contem, regiao_contem))
-        {
-            std::cout << "Não existe solução para o quebra-cabeça de Sudoku informado.\n";
-        }
+        // Retornar o resultado da recursão
+        return resolver(tabuleiro, 0, 0, linha_contem, coluna_contem, regiao_contem);
     }
 
 private:
-    // Função para encontrar a próxima posição vazia no tabuleiro
     static constexpr std::pair<std::size_t, std::size_t> proxima_posicao_vazia(const std::vector<std::vector<char>> &tabuleiro, std::size_t linha, std::size_t coluna) noexcept
     {
         while (linha != 9)
@@ -60,35 +119,28 @@ private:
             linha = proxima_linha(linha, coluna);
             coluna = proxima_coluna(coluna);
         }
-
         return {9, 0};
     }
 
-    // Função recursiva para resolver o Sudoku
     static bool resolver(std::vector<std::vector<char>> &tabuleiro, std::size_t linha_inicio, std::size_t coluna_inicio,
                          std::array<std::bitset<9>, 9> &linha_contem,
                          std::array<std::bitset<9>, 9> &coluna_contem,
                          std::array<std::bitset<9>, 9> &regiao_contem) noexcept
     {
-        // Encontrar a próxima posição vazia
         auto [linha, coluna] = proxima_posicao_vazia(tabuleiro, linha_inicio, coluna_inicio);
 
-        // Se não houver mais posições vazias, o tabuleiro está resolvido
         if (linha == 9)
         {
             return true;
         }
 
-        // Obter a região 3x3 correspondente
         std::size_t regiao = obter_regiao(linha, coluna);
-        // Verificar quais dígitos já estão presentes na linha, coluna e região
         std::bitset<9> contem = linha_contem[linha] | coluna_contem[coluna] | regiao_contem[regiao];
         if (contem.all())
         {
             return false;
         }
 
-        // Tentar preencher a posição com cada dígito possível
         for (std::size_t idx_digito = 0; idx_digito < 9; ++idx_digito)
         {
             if (!contem[idx_digito])
@@ -102,7 +154,6 @@ private:
                 std::cout << "Colocando " << (char)(idx_digito + '1') << " em (" << linha << ", " << coluna << ")\n";
                 imprimir_tabuleiro(tabuleiro);
 
-                // Chamar a função recursiva para continuar resolvendo o tabuleiro
                 if (resolver(tabuleiro, linha, coluna, linha_contem, coluna_contem, regiao_contem))
                 {
                     return true;
@@ -119,19 +170,16 @@ private:
         return false;
     }
 
-    // Função para obter a próxima linha a partir da posição atual
     static constexpr std::size_t proxima_linha(std::size_t linha, std::size_t coluna) noexcept
     {
         return linha + (coluna + 1) / 9;
     }
 
-    // Função para obter a próxima coluna a partir da posição atual
     static constexpr std::size_t proxima_coluna(std::size_t coluna) noexcept
     {
         return (coluna + 1) % 9;
     }
 
-    // Função para imprimir o tabuleiro do Sudoku
     static void imprimir_tabuleiro(const std::vector<std::vector<char>> &tabuleiro)
     {
         for (std::size_t linha = 0; linha < 9; ++linha)
@@ -145,7 +193,6 @@ private:
     }
 };
 
-// Função global para imprimir o tabuleiro do Sudoku
 void imprimir_tabuleiro(const std::vector<std::vector<char>> &tabuleiro)
 {
     for (std::size_t linha = 0; linha < 9; ++linha)
@@ -158,7 +205,6 @@ void imprimir_tabuleiro(const std::vector<std::vector<char>> &tabuleiro)
     }
 }
 
-// Função para carregar o tabuleiro de um arquivo
 std::vector<std::vector<char>> carregar_tabuleiro(const std::string &nome_arquivo)
 {
     std::vector<std::vector<char>> tabuleiro(9, std::vector<char>(9, '.'));
@@ -174,35 +220,56 @@ std::vector<std::vector<char>> carregar_tabuleiro(const std::string &nome_arquiv
         }
         arquivo.close();
     }
+    else
+    {
+        std::cout << "Não foi possível abrir o arquivo: " << nome_arquivo << "\n";
+    }
     return tabuleiro;
 }
 
 int main()
 {
-    // Acentos especiais
     std::setlocale(LC_ALL, "pt_BR.UTF-8");
 
-    // Carregar o tabuleiro do arquivo
-    std::vector<std::vector<char>> tabuleiro = carregar_tabuleiro("sudoku_gerado.txt");
+    // Perguntar o nome do arquivo a ser carregado
+    std::string nome_arquivo;
+    std::cout << "Digite o nome do arquivo com o Sudoku a ser resolvido (exemplo: facil.txt): ";
+    std::cin >> nome_arquivo;
+
+    std::vector<std::vector<char>> tabuleiro = carregar_tabuleiro(nome_arquivo);
 
     std::cout << "Quebra-cabeça de Sudoku carregado:\n";
     imprimir_tabuleiro(tabuleiro);
+
+    // Validação inicial
+    std::string motivo = validar_tabuleiro(tabuleiro);
+    if (!motivo.empty())
+    {
+        std::cout << "Jogo não tem solução por conta do motivo: " << motivo << std::endl;
+        return 1;
+    }
 
     // Iniciar cronômetro
     auto inicio = std::chrono::high_resolution_clock::now();
 
     // Resolver o Sudoku
     Solucao solucao;
-    solucao.resolverSudoku(tabuleiro);
+    bool resolveu = solucao.resolverSudoku(tabuleiro);
 
     // Parar cronômetro
     auto fim = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double, std::milli> tempo = fim - inicio;
 
-    std::cout << "Sudoku resolvido:\n";
-    imprimir_tabuleiro(tabuleiro);
+    if (resolveu)
+    {
+        std::cout << "Sudoku resolvido:\n";
+        imprimir_tabuleiro(tabuleiro);
+    }
+    else
+    {
+        std::cout << "Não existe solução para o tabuleiro de Sudoku informado!\n";
+    }
 
-    // Mostrar o tempo gasto
     std::cout << "Tempo gasto: " << tempo.count() << " ms" << std::endl;
 
     return 0;

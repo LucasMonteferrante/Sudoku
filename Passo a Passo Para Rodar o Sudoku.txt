@@ -1,12 +1,14 @@
-1 - Compilar os códigos:
+1 - Compilar:
 
 g++ SudokuCriar.cpp -o SudokuCriar.exe
 g++ SudokuResolver.cpp -o SudokuResolver.exe
 
-2 - Criar o tabuleiro (txt)
+2 - Criar tabuleiro:
 
 ./SudokuCriar.exe
+→ Digitar o nome do arquivo ao salvar (ex: facil.txt)
 
-3 - Resolver o jogo
+3- Resolver tabuleiro:
 
 ./SudokuResolver.exe
+→ Digitar o nome do arquivo que queremos resolver (ex: facil.txt)
