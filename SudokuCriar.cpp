@@ -30,6 +30,33 @@ constexpr std::size_t proxima_coluna(std::size_t coluna) noexcept
     return (coluna + 1) % 9;
 }
 
+// Função global para imprimir o tabuleiro com grade e espaços antes e depois
+void imprimir_tabuleiro(const std::vector<std::vector<char>> &tabuleiro)
+{
+    std::cout << '\n';
+    for (std::size_t linha = 0; linha < 9; ++linha)
+    {
+        if (linha % 3 == 0 && linha != 0)
+        {
+            std::cout << "------+-------+------\n";
+        }
+        for (std::size_t coluna = 0; coluna < 9; ++coluna)
+        {
+            if (coluna % 3 == 0 && coluna != 0)
+            {
+                std::cout << "| ";
+            }
+            char c = tabuleiro[linha][coluna];
+            if (c == '.')
+                std::cout << ". ";
+            else
+                std::cout << c << ' ';
+        }
+        std::cout << '\n';
+    }
+    std::cout << '\n';
+}
+
 class Solucao
 {
 public:
@@ -119,33 +146,6 @@ private:
         return false;
     }
 };
-
-// NOVA função para imprimir o tabuleiro com grades:
-void imprimir_tabuleiro(const std::vector<std::vector<char>> &tabuleiro)
-{
-    std::cout << '\n'; // Espaço antes do tabuleiro
-    for (std::size_t linha = 0; linha < 9; ++linha)
-    {
-        if (linha % 3 == 0 && linha != 0)
-        {
-            std::cout << "------+-------+------\n";
-        }
-        for (std::size_t coluna = 0; coluna < 9; ++coluna)
-        {
-            if (coluna % 3 == 0 && coluna != 0)
-            {
-                std::cout << "| ";
-            }
-            char c = tabuleiro[linha][coluna];
-            if (c == '.')
-                std::cout << ". ";
-            else
-                std::cout << c << ' ';
-        }
-        std::cout << '\n';
-    }
-    std::cout << '\n'; // Espaço depois do tabuleiro
-}
 
 std::vector<std::vector<char>> gerar_tabuleiro_aleatorio(int num_vazios)
 {

@@ -16,6 +16,33 @@ constexpr std::size_t obter_regiao(std::size_t linha, std::size_t coluna) noexce
     return (linha / 3) * 3 + coluna / 3;
 }
 
+// Função global para imprimir o tabuleiro com grades e espaço antes/depois
+void imprimir_tabuleiro(const std::vector<std::vector<char>> &tabuleiro)
+{
+    std::cout << '\n'; // Espaço antes do tabuleiro
+    for (std::size_t linha = 0; linha < 9; ++linha)
+    {
+        if (linha % 3 == 0 && linha != 0)
+        {
+            std::cout << "------+-------+------\n";
+        }
+        for (std::size_t coluna = 0; coluna < 9; ++coluna)
+        {
+            if (coluna % 3 == 0 && coluna != 0)
+            {
+                std::cout << "| ";
+            }
+            char c = tabuleiro[linha][coluna];
+            if (c == '.')
+                std::cout << ". ";
+            else
+                std::cout << c << ' ';
+        }
+        std::cout << '\n';
+    }
+    std::cout << '\n'; // Espaço depois do tabuleiro
+}
+
 // Função para validar o tabuleiro antes de tentar resolver
 std::string validar_tabuleiro(const std::vector<std::vector<char>> &tabuleiro)
 {
@@ -152,7 +179,7 @@ private:
                 regiao_contem[regiao].set(idx_digito);
 
                 // Saída de depuração
-                std::cout << "Colocando " << (char)(idx_digito + '1') << " em (" << linha << ", " << coluna << ")\n";
+                std::cout << "\nColocando " << (char)(idx_digito + '1') << " em (" << linha << ", " << coluna << ")\n";
                 imprimir_tabuleiro(tabuleiro);
 
                 if (resolver(tabuleiro, linha, coluna, linha_contem, coluna_contem, regiao_contem))
@@ -161,7 +188,9 @@ private:
                 }
 
                 // Saída de depuração para backtracking
-                std::cout << "Retrocedendo em (" << linha << ", " << coluna << ")\n";
+                std::cout << "\nRetrocedendo em (" << linha << ", " << coluna << ")\n";
+                imprimir_tabuleiro(tabuleiro);
+
                 tabuleiro[linha][coluna] = '.';
                 linha_contem[linha].reset(idx_digito);
                 coluna_contem[coluna].reset(idx_digito);
@@ -180,59 +209,7 @@ private:
     {
         return (coluna + 1) % 9;
     }
-
-    // Função de depuração interna (não utilizada no main, pode deixar se quiser)
-    static void imprimir_tabuleiro(const std::vector<std::vector<char>> &tabuleiro)
-    {
-        for (std::size_t linha = 0; linha < 9; ++linha)
-        {
-            if (linha % 3 == 0 && linha != 0)
-            {
-                std::cout << "------+-------+------\n";
-            }
-            for (std::size_t coluna = 0; coluna < 9; ++coluna)
-            {
-                if (coluna % 3 == 0 && coluna != 0)
-                {
-                    std::cout << "| ";
-                }
-                char c = tabuleiro[linha][coluna];
-                if (c == '.')
-                    std::cout << ". ";
-                else
-                    std::cout << c << ' ';
-            }
-            std::cout << '\n';
-        }
-    }
 };
-
-// Função global para imprimir o tabuleiro com grades
-void imprimir_tabuleiro(const std::vector<std::vector<char>> &tabuleiro)
-{
-    std::cout << '\n'; // Espaço antes do tabuleiro
-    for (std::size_t linha = 0; linha < 9; ++linha)
-    {
-        if (linha % 3 == 0 && linha != 0)
-        {
-            std::cout << "------+-------+------\n";
-        }
-        for (std::size_t coluna = 0; coluna < 9; ++coluna)
-        {
-            if (coluna % 3 == 0 && coluna != 0)
-            {
-                std::cout << "| ";
-            }
-            char c = tabuleiro[linha][coluna];
-            if (c == '.')
-                std::cout << ". ";
-            else
-                std::cout << c << ' ';
-        }
-        std::cout << '\n';
-    }
-    std::cout << '\n'; // Espaço depois do tabuleiro
-}
 
 std::vector<std::vector<char>> carregar_tabuleiro(const std::string &nome_arquivo)
 {
