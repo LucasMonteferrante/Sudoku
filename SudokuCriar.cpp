@@ -123,6 +123,7 @@ private:
 // NOVA função para imprimir o tabuleiro com grades:
 void imprimir_tabuleiro(const std::vector<std::vector<char>> &tabuleiro)
 {
+    std::cout << '\n'; // Espaço antes do tabuleiro
     for (std::size_t linha = 0; linha < 9; ++linha)
     {
         if (linha % 3 == 0 && linha != 0)
@@ -143,6 +144,7 @@ void imprimir_tabuleiro(const std::vector<std::vector<char>> &tabuleiro)
         }
         std::cout << '\n';
     }
+    std::cout << '\n'; // Espaço depois do tabuleiro
 }
 
 std::vector<std::vector<char>> gerar_tabuleiro_aleatorio(int num_vazios)
