@@ -10,16 +10,15 @@
 #include <string>
 #include <set>
 
-// ... (funções obter_regiao e validar_tabuleiro iguais ao exemplo anterior) ...
-
+// Função para obter a região 3x3 correspondente a uma determinada linha e coluna
 constexpr std::size_t obter_regiao(std::size_t linha, std::size_t coluna) noexcept
 {
     return (linha / 3) * 3 + coluna / 3;
 }
 
+// Função para validar o tabuleiro antes de tentar resolver
 std::string validar_tabuleiro(const std::vector<std::vector<char>> &tabuleiro)
 {
-    // ... mesmo código de validação anterior ...
     // Verificar linhas
     for (int i = 0; i < 9; ++i)
     {
@@ -182,28 +181,54 @@ private:
         return (coluna + 1) % 9;
     }
 
+    // Função de depuração interna (não utilizada no main, pode deixar se quiser)
     static void imprimir_tabuleiro(const std::vector<std::vector<char>> &tabuleiro)
     {
         for (std::size_t linha = 0; linha < 9; ++linha)
         {
+            if (linha % 3 == 0 && linha != 0)
+            {
+                std::cout << "------+-------+------\n";
+            }
             for (std::size_t coluna = 0; coluna < 9; ++coluna)
             {
-                std::cout << tabuleiro[linha][coluna] << " ";
+                if (coluna % 3 == 0 && coluna != 0)
+                {
+                    std::cout << "| ";
+                }
+                char c = tabuleiro[linha][coluna];
+                if (c == '.')
+                    std::cout << ". ";
+                else
+                    std::cout << c << ' ';
             }
-            std::cout << "\n";
+            std::cout << '\n';
         }
     }
 };
 
+// Função global para imprimir o tabuleiro com grades
 void imprimir_tabuleiro(const std::vector<std::vector<char>> &tabuleiro)
 {
     for (std::size_t linha = 0; linha < 9; ++linha)
     {
+        if (linha % 3 == 0 && linha != 0)
+        {
+            std::cout << "------+-------+------\n";
+        }
         for (std::size_t coluna = 0; coluna < 9; ++coluna)
         {
-            std::cout << tabuleiro[linha][coluna] << " ";
+            if (coluna % 3 == 0 && coluna != 0)
+            {
+                std::cout << "| ";
+            }
+            char c = tabuleiro[linha][coluna];
+            if (c == '.')
+                std::cout << ". ";
+            else
+                std::cout << c << ' ';
         }
-        std::cout << "\n";
+        std::cout << '\n';
     }
 }
 
