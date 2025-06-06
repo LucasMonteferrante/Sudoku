@@ -1,16 +1,16 @@
 // SudokuCriar.cpp
 
-#include <vector>
-#include <array>
-#include <bitset>
-#include <iostream>
-#include <cstdlib>
-#include <ctime>
-#include <fstream>
-#include <algorithm>
-#include <random>
-#include <locale>
-#include <string>
+#include <vector>    // Para usar listas (vetores) dinâmicos
+#include <array>     // Para usar arrays fixos, mais rápidos
+#include <bitset>    // Para representar conjuntos de bits (usado para controle rápido de valores)
+#include <iostream>  // Para entrada e saída (cin/cout)
+#include <cstdlib>   // Para funções como srand/rand
+#include <ctime>     // Para obter o horário atual (usado em srand)
+#include <fstream>   // Para salvar arquivos
+#include <algorithm> // Para usar funções de embaralhar (shuffle)
+#include <random>    // Para gerar números aleatórios modernos
+#include <locale>    // Para configurar a linguagem/acentuação do terminal
+#include <string>    // Para usar strings
 
 // Função para obter a região 3x3 correspondente a uma determinada linha e coluna
 constexpr std::size_t obter_regiao(std::size_t linha, std::size_t coluna) noexcept
