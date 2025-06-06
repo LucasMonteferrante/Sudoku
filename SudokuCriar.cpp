@@ -146,9 +146,9 @@ private:
             if (!contem[idx_digito]) // Se esse dígito ainda não foi usado
             {
                 tabuleiro[linha][coluna] = static_cast<char>(idx_digito + '1'); // Preenche a célula
-                linha_contem[linha].set(idx_digito);    // Marca na linha
-                coluna_contem[coluna].set(idx_digito);  // Marca na coluna
-                regiao_contem[regiao].set(idx_digito);  // Marca na região
+                linha_contem[linha].set(idx_digito);                            // Marca na linha
+                coluna_contem[coluna].set(idx_digito);                          // Marca na coluna
+                regiao_contem[regiao].set(idx_digito);                          // Marca na região
                 // Chama recursivamente para próxima célula
                 if (resolver(tabuleiro, linha, coluna, linha_contem, coluna_contem, regiao_contem))
                 {

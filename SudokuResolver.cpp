@@ -1,14 +1,14 @@
 // SudokuResolver.cpp
 
-#include <vector>    // Para usar vetores dinâmicos (listas 2D para o tabuleiro)
-#include <array>     // Para arrays fixos de tamanho conhecido (bitsets por linha, coluna, região)
-#include <bitset>    // Para representar conjunto de 9 bits (usado para controle rápido de valores)
-#include <iostream>  // Para entrada/saída de dados (cin/cout)
-#include <fstream>   // Para ler tabuleiros de arquivos
-#include <chrono>    // Para medir o tempo de execução
-#include <locale>    // Para configurar a acentuação do terminal
-#include <string>    // Para manipulação de strings
-#include <set>       // Para validação de repetições (linhas, colunas, blocos)
+#include <vector>   // Para usar vetores dinâmicos (listas 2D para o tabuleiro)
+#include <array>    // Para arrays fixos de tamanho conhecido (bitsets por linha, coluna, região)
+#include <bitset>   // Para representar conjunto de 9 bits (usado para controle rápido de valores)
+#include <iostream> // Para entrada/saída de dados (cin/cout)
+#include <fstream>  // Para ler tabuleiros de arquivos
+#include <chrono>   // Para medir o tempo de execução
+#include <locale>   // Para configurar a acentuação do terminal
+#include <string>   // Para manipulação de strings
+#include <set>      // Para validação de repetições (linhas, colunas, blocos)
 
 // Função que retorna o índice da região 3x3 para uma posição no tabuleiro
 constexpr std::size_t obter_regiao(std::size_t linha, std::size_t coluna) noexcept
