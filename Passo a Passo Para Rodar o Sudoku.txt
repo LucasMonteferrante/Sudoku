@@ -13,34 +13,6 @@ g++ SudokuResolver.cpp -o SudokuResolver.exe
 ./SudokuResolver.exe
 → Digitar o nome do arquivo que queremos resolver (ex: facil.txt)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 Resumo:
 
 Backtracking = tentar, testar, e recuar se precisar, explorando todas as possibilidades.
