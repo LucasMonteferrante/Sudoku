@@ -12,3 +12,17 @@ g++ SudokuResolver.cpp -o SudokuResolver.exe
 
 ./SudokuResolver.exe
 → Digitar o nome do arquivo que queremos resolver (ex: facil.txt)
+
+Resumo:
+
+Backtracking = tentar, testar, e recuar se precisar, explorando todas as possibilidades.
+
+Bitset = ferramenta rápida para marcar e verificar quais números já foram usados, usando apenas bits.
+
+Resumo direto:
+
+Compilada: C, C++, executa rápido, precisa compilar.
+
+Interpretada: Python, JavaScript, executa direto, mais devagar.
+
+Híbrida: Java, C#, mistura os dois processos.
